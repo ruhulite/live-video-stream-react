@@ -42,10 +42,8 @@ const WebCamera = () => {
     }
 
     useEffect(() => {
-        if (shape) {
-            animate();
-        }
-    });
+        animate();
+    }, [shape]);
 
     const captureImage = useCallback(async () => {
         const imgSrc = camRef.current.getScreenshot();
