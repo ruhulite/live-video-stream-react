@@ -2,12 +2,23 @@
     display: flex;
     justify-content: center;
     flex-direction: column;
+    background-color: #f5f5f5;
+    padding: 0 50px 50px;
+}
+.web-camera-video h3 {
+    font-weight: 400;
+    text-align: center;
+    color: #2196F3;
+    text-transform: capitalize;
+    margin-bottom: 5px;
 }
 .camera-wrapper {
     padding: 0;
     position: relative;
     width: 400px;
     height: 300px;
+    border: 3px solid #2196F3;
+    border-radius: 2px;
 }
 .action-button {
     display: flex;
@@ -15,13 +26,17 @@
     align-items: center;
     padding: 20px 0 0;
 }
+
 .action-button button {
     margin: 0 10px;
-    padding: 7px 20px;
-    border-radius: 7px;
+    padding: 8px 25px 7px 25px;
     background-color: #04AA6D;
-    color: white;
+    color: #ffffff;
     border: none;
+    text-transform: uppercase;
+    font-weight: 400;
+    border-radius: 2px;
+    cursor: pointer;
 }
 .action-button .refresh {
     background-color: #2196F3;
@@ -34,7 +49,22 @@
 }
 .preview-image {
     margin-top: 100px;
+}
+.preview-image p {
+    text-align: center;
+    color: #ff0000;
+    margin-bottom: 5px;
+    font-size: .75rem;
+}
+.preview-image p.success {
+    color: green;
+}
+.preview-image-wrap {
     position: relative;
+}
+.preview-image-wrap img {
+    border: 3px solid #2196F3;
+    border-radius: 2px;
 }
 .captcha-rectangle {
     position: absolute;
@@ -42,8 +72,54 @@
     left: 0;
     width: 100px;
     height: 100px;
-    border: 1px solid red;
+    border-top: 1px solid #ffffff;
+    border-left: 1px solid #ffffff;
     display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    padding: 0;
+    background-color: rgb(255, 255, 255, 0.15);
+}
+.captcha-rectangle li {
+    list-style-type: none;
+    display: inline-flex;
+}
+.captcha-rectangle li span {
+    width: 19px;
+    height: 19px;
+    display: flex;
+    position: relative;
+    border-right: 1px solid #ffffff;
+    border-bottom: 1px solid #ffffff;
     justify-content: center;
     align-items: center;
+}
+.captcha-rectangle li.active span,
+.captcha-rectangle li .checked {
+    display: none;
+}
+.captcha-rectangle li .checked {
+    color: #04AA6D;
+}
+.captcha-rectangle li.active .checked {
+    display: flex;
+}
+.captcha-rectangle li .circle:before,
+.captcha-rectangle li .triangle:before,
+.captcha-rectangle li .square:before {
+    content: "";
+    background-color: #ffffff;
+    width: 13px;
+    height: 13px;
+}
+.captcha-rectangle li .circle:before {
+    border-radius: 50%;
+}
+.captcha-rectangle li .triangle:before {
+    background-color: transparent;
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 9px solid #ffffff;
 }
