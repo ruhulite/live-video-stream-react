@@ -1,6 +1,11 @@
 # live-video-stream-react
 live video stream with react and captcha validation
 
+## Packages or dependencies
+React Webcam. [https://www.npmjs.com/package/react-webcam)
+
+### `version: ^7.2.0`
+
 ## Available Scripts
 
 In the project directory, you can run:
