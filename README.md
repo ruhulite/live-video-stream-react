@@ -1,6 +1,5 @@
-# Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# live-video-stream-react
+live video stream with react and captcha validation
 
 ## Available Scripts
 
