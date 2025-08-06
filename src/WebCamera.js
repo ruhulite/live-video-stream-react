@@ -1,6 +1,7 @@
 import React, {useRef, useState, useCallback, useEffect} from "react";
 import Webcam from "react-webcam";
 import './WebCamera.css'
+import Preview from "./components/Preview";
 
 const videoConstraints = {
     width: 400,
@@ -16,33 +17,6 @@ const WebCamera = () => {
     const [validationMessage, setValidationMessage] = useState(null);
 
     const validationDataSet = ['triangle', 'circle', 'square'];
-    const captchaData = [
-        '',
-        'triangle',
-        'circle',
-        'square',
-        '',
-        'triangle',
-        'circle',
-        'square',
-        '',
-        'triangle',
-        'circle',
-        'square',
-        '',
-        'triangle',
-        'circle',
-        'square',
-        '',
-        'triangle',
-        'circle',
-        'square',
-        '',
-        'triangle',
-        'circle',
-        'square',
-        ''
-    ];
 
     // rectangle box animation
     let x = 0;
@@ -77,9 +51,9 @@ const WebCamera = () => {
     }, [shape]);
 
     // capture selfie image
-    const captureImage = useCallback(async () => {
+    const handleCaptureImage = useCallback(async () => {
         setImgUrl(null);
-        setValidationMessage(null);
+        setValidationMessage('');
         const imgSrc = camRef.current.getScreenshot();
         setImgUrl(imgSrc);
 
@@ -90,54 +64,6 @@ const WebCamera = () => {
 
         setValidationTitleIndex(Math.floor(Math.random() * validationDataSet.length));
     }, [camRef]);
-
-    // making random captcha data
-    function makeArrayShuffle(arr) {
-        for (let i = arr.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [arr[i], arr[j]] = [arr[j], arr[i]]; // swap array data
-        }
-        return arr;
-    }
-
-    const randomDataObject = makeArrayShuffle([...captchaData]);
-
-    let selectedCaptchaData = [];
-
-    // click captcha box
-    const handleClick = (val) => {
-        val.e.target.parentNode.classList.add('active');
-        selectedCaptchaData.push(val.item);
-    }
-
-    // handle validation & set validation message
-    const handleValidation = () => {
-        if (selectedCaptchaData.length < 1) {
-            setValidationMessage(`Please select ${validationDataSet[validationTitleIndex]}`);
-        } else {
-            let wrongData = undefined;
-            for (let i = 0; i < selectedCaptchaData.length; i++) {
-                if (selectedCaptchaData[i] !== validationDataSet[validationTitleIndex]) {
-                    wrongData = true;
-                }
-            }
-            if (wrongData) {
-                setValidationMessage('Not match! Please try again.')
-                selectedCaptchaData = [];
-                captchaRef.current.querySelectorAll('li').forEach((element) => element.classList.remove('active'));
-            } else {
-                if (selectedCaptchaData.length >= 3) {
-                    setValidationMessage('Validation success.')
-                    selectedCaptchaData = [];
-                    captchaRef.current.querySelectorAll('li').forEach((element) => element.classList.remove('active'));
-                } else {
-                    setValidationMessage(`Please select at least 3 ${validationDataSet[validationTitleIndex]}`);
-                    selectedCaptchaData = [];
-                    captchaRef.current.querySelectorAll('li').forEach((element) => element.classList.remove('active'));
-                }
-            }
-        }
-    }
 
     return (
         <>
@@ -152,45 +78,21 @@ const WebCamera = () => {
                         audio={false}
                     />
                     <div className="action-button">
-                        <button onClick={captureImage}>Continue</button>
+                        <button onClick={handleCaptureImage}>Continue</button>
                         <button className="refresh" onClick={() => {
                             setImgUrl(null);
-                            setValidationMessage(null);
+                            setValidationMessage('');
                         }}>Refresh</button>
                     </div>
                 </div>
-                <div className="preview-image">
-                    {imgUrl && (
-                        <>
-                            <h3>Select {validationDataSet[validationTitleIndex]}</h3>
-                            <p className={validationMessage === 'Validation success.' ? 'success' : ''}>{validationMessage}</p>
-                            <div className="preview-image-wrap">
-                                <img src={imgUrl} alt="Captured Screnshot" />
-                                <ul ref={captchaRef} className="captcha-rectangle">
-                                    { randomDataObject.map((item, index) =>
-                                        (<li
-                                            key={index}
-                                            onClick={(e) => handleClick({item, e})}
-                                        >
-                                            <span className="checked">&#10004;</span>
-                                            { item === 'circle' ? (
-                                                <span className="circle" />
-                                            ) : item === 'square' ? (
-                                                <span className="square" />
-                                            ) : item === 'triangle' ? (
-                                                <span className="triangle" />
-                                            ) : (
-                                                <span className="blank" />
-                                            ) }
-                                        </li>)) }
-                                </ul>
-                            </div>
-                            <div className='action-button'>
-                                <button onClick={() => handleValidation() }>Validate</button>
-                            </div>
-                        </>
-                    )}
-                </div>
+                <Preview
+                    imgUrl={imgUrl}
+                    captchaRef={captchaRef}
+                    validationDataSet={validationDataSet}
+                    validationTitleIndex={validationTitleIndex}
+                    validationMessage={validationMessage}
+                    setValidationMessage={setValidationMessage}
+                />
             </div>
         </>
     )
